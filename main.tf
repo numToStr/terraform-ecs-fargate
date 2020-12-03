@@ -5,6 +5,13 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  backend "s3" {
+    bucket  = "cricuru-terraform-state"
+    key     = "tf-demo/terraform.tfstate"
+    region  = "ap-south-1"
+    profile = "tfuser"
+  }
 }
 
 provider "aws" {
