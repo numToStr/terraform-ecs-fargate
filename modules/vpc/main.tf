@@ -5,7 +5,7 @@ locals {
 ########### VPC ###########
 
 resource "aws_vpc" "this" {
-  cidr_block = "11.0.0.0/16"
+  cidr_block = var.cidr_block
 
   tags = {
     "Name" = "My-Vpc"
@@ -16,7 +16,7 @@ resource "aws_vpc" "this" {
 
 resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.this.id
-  cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 4, (count.index + 1) + (local.azs_len * 1))
+  cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 8, count.index + 1)
   availability_zone = var.azs[count.index]
 
   count = local.azs_len
@@ -46,7 +46,7 @@ resource "aws_route_table_association" "private" {
 
 resource "aws_subnet" "public" {
   vpc_id            = aws_vpc.this.id
-  cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 4, (count.index + 1) + (local.azs_len * 2))
+  cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 8, (count.index + 1) + local.azs_len)
   availability_zone = var.azs[count.index]
 
   count = local.azs_len

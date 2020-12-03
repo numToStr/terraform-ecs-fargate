@@ -1,3 +1,8 @@
+variable "cidr_block" {
+  type = string
+  description = "CIDR block for the VPC"
+}
+
 variable "azs" {
   type = list(string)
   description = "Availability Zones for the current region"
