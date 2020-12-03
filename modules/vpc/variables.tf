@@ -6,6 +6,11 @@ variable "cidr_block" {
 variable "azs" {
   type = list(string)
   description = "Availability Zones for the current region"
+
+  validation {
+    condition = length(var.azs) >= 2
+    error_message = "The length of availability zones should be greater or equal to 2."
+  }
 }
 
 variable "destination_cidr_block" {
